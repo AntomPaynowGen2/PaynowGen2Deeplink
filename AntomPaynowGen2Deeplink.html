@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>window.VOTE_STANDALONE=true;window.VOTE_SNAPSHOT={"paynow_order":{"survey":"paynow_order","question":"order","counts":{"alpha":2,"freq":2},"total":4,"updatedAt":1794803793102,"generatedAt":1794815963189},"paynow_style":{"survey":"paynow_style","question":"style","counts":{"badge":2,"pill":2},"total":4,"updatedAt":1794803793102,"generatedAt":1794815963189}};</script>
+<script>window.VOTE_STANDALONE=true;window.VOTE_SNAPSHOT={"paynow_order":{"survey":"paynow_order","question":"order","counts":{"alpha":2,"freq":2},"total":4,"updatedAt":1794803793102,"generatedAt":1794819140677},"paynow_style":{"survey":"paynow_style","question":"style","counts":{"badge":2,"pill":2},"total":4,"updatedAt":1794803793102,"generatedAt":1794819140677}};</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAS Showcase — PayNow (OCBC) Prototype</title>
@@ -500,13 +500,12 @@
      The whole stage is then scaled to the viewport by fitStage(), so the
      page itself never scrolls on any screen — only the demo phone does.
      ================================================================== */
-  /* mobile tab menu — hidden everywhere except compact screens */
+  /* mobile tab bar — hidden everywhere except compact screens */
   .mob-nav{display:none;}
-  .mob-menu{display:none;}
 
   @media (max-width:680px), (max-height:540px){
     body{display:block;overflow-y:auto;}
-    .stage{margin:0 auto;gap:26px;padding:66px 14px 10px;}
+    .stage{margin:0 auto;gap:26px;padding:12px 14px 8px;}
     #contentArea{min-height:0;width:100%;flex-direction:column;align-items:center;gap:24px;}
     .phone-wrap{margin:0;display:flex;justify-content:center;align-items:flex-start;width:100%;}
     .fw-eyebrow{display:none !important;}
@@ -522,36 +521,19 @@
     body .oc-video-row::before{width:min(560px,calc(100vw - 32px));height:min(640px,70vh);}
     body .cs-video-row{padding-left:0;padding-right:0;}
 
-    /* top-left menu button + drawer */
-    .mob-nav{display:block;position:fixed;top:calc(10px + env(safe-area-inset-top));left:12px;z-index:220;font-family:inherit;}
-    .mob-btn{
-      display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 15px 0 13px;
-      border:1px solid #E6E9F2;border-radius:999px;background:#fff;color:#1C1C1E;
-      font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
-      box-shadow:0 8px 22px -10px rgba(30,40,90,.45),0 2px 6px rgba(30,40,90,.06);
-    }
-    .mob-btn:active{transform:scale(.97);}
-    .mob-bars{display:flex;flex-direction:column;justify-content:center;gap:4px;width:16px;height:14px;}
-    .mob-bars i{display:block;height:2px;border-radius:2px;background:var(--acc,#fa2c99);transition:transform .18s,opacity .18s;}
-    .mob-btn.open .mob-bars i:nth-child(1){transform:translateY(6px) rotate(45deg);}
-    .mob-btn.open .mob-bars i:nth-child(2){opacity:0;}
-    .mob-btn.open .mob-bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-    .mob-menu{
-      position:absolute;top:calc(100% + 8px);left:0;width:min(236px,calc(100vw - 24px));
-      background:#fff;border-radius:16px;padding:6px;box-shadow:0 24px 54px -20px rgba(20,30,80,.4),0 0 0 1px #ECEEF5;
-    }
-    .mob-menu.open{display:block;animation:mobIn .16s ease;}
+    /* the same four-tab pill bar as desktop, pinned to the bottom edge */
+    .mob-nav{display:block;position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:220;font-family:inherit;width:calc(100vw - 24px);max-width:440px;}
+    .mob-tabs{display:flex;align-items:stretch;background:#fff;border-radius:999px;padding:4px;box-shadow:0 14px 34px -16px rgba(70,80,140,.35),0 0 0 1px #F0F0F4;}
     .mob-mi{
-      display:flex;align-items:center;width:100%;padding:12px 13px;border:none;border-radius:11px;
-      background:transparent;font-family:inherit;font-size:14px;font-weight:500;color:#1C1C1E;
-      text-align:left;white-space:nowrap;cursor:pointer;
+      flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+      border:none;border-radius:999px;background:transparent;padding:7px 4px;cursor:pointer;
+      font-family:inherit;font-size:10.5px;line-height:1.24;font-weight:500;color:#1C1C1E;
+      white-space:normal;transition:background .15s;
     }
-    .mob-mi + .mob-mi{margin-top:2px;}
-    .mob-mi.active{background:var(--acc,#fa2c99);color:#fff;font-weight:600;}
+    .mob-mi.active{background:var(--acc,#fa2c99);color:#fff;font-weight:600;padding:7px 8px;}
     .mob-mi:not(.active):hover{background:#F5F5F7;}
     .mob-mi:active{filter:brightness(.96);}
   }
-  @keyframes mobIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
 
   /* very narrow handsets (<400 CSS px): stack the case-study stats */
   @media (max-width:420px){
@@ -658,13 +640,10 @@
   </nav>
 </div>
 
-<!-- compact-screen tab menu: only visible ≤680px (or short landscape phones);
-     the drawer items are generated from #masNav so variants stay in sync -->
+<!-- compact-screen tab bar: only visible ≤680px (or short landscape phones);
+     the tabs are generated from #masNav so variants stay in sync -->
 <div class="mob-nav" id="mobNav">
-  <button class="mob-btn" id="mobBtn" onclick="toggleMobMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobMenu">
-    <span class="mob-bars" aria-hidden="true"><i></i><i></i><i></i></span><span>Menu</span>
-  </button>
-  <div class="mob-menu" id="mobMenu" role="menu"></div>
+  <div class="mob-tabs" id="mobMenu" role="menu"></div>
 </div>
 
 <script>
@@ -965,9 +944,9 @@ function switchFlow(f){
   scheduleFit();   // the compact single-column height differs per tab
 }
 
-// ============ Compact screens: top-left tab menu ============
-// Below 680px (or on a very short landscape phone) the pill tab bar is hidden
-// and replaced by a menu button in the top-left corner. The drawer is built
+// ============ Compact screens: bottom tab bar ============
+// Below 680px (or on a very short landscape phone) the desktop pill bar is
+// replaced by the same four tabs pinned to the bottom edge. The bar is built
 // from #masNav itself, so variants (B drops a tab, C relabels them) stay in sync.
 function buildMobMenu(){
   const menu = document.getElementById('mobMenu');
@@ -978,9 +957,9 @@ function buildMobMenu(){
     const parts = Array.from(b.querySelectorAll('span')).map(s=>s.textContent.trim()).filter(Boolean);
     const label = parts.length ? parts.join(' ') : (b.textContent || '').replace(/\s+/g,' ').trim();
     if(b.dataset.flow)
-      return `<button class="mob-mi" role="menuitem" data-key="${b.dataset.flow}" onclick="switchFlow('${b.dataset.flow}');closeMobMenu()">${label}</button>`;
+      return `<button class="mob-mi" role="menuitem" data-key="${b.dataset.flow}" onclick="switchFlow('${b.dataset.flow}')">${label}</button>`;
     if(b.dataset.ov)
-      return `<button class="mob-mi" role="menuitem" data-key="${b.dataset.ov}" onclick="pickOtherView('${b.dataset.ov}');closeMobMenu()">${label}</button>`;
+      return `<button class="mob-mi" role="menuitem" data-key="${b.dataset.ov}" onclick="pickOtherView('${b.dataset.ov}')">${label}</button>`;
     return '';
   }).join('');
   syncMobMenu();
@@ -992,23 +971,6 @@ function syncMobMenu(){
   document.querySelectorAll('#mobMenu .mob-mi').forEach(m=>
     m.classList.toggle('active', m.dataset.key === key));
 }
-function toggleMobMenu(force){
-  const btn = document.getElementById('mobBtn');
-  const menu = document.getElementById('mobMenu');
-  if(!btn || !menu) return;
-  const open = typeof force === 'boolean' ? force : !menu.classList.contains('open');
-  menu.classList.toggle('open', open);
-  btn.classList.toggle('open', open);
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-}
-function closeMobMenu(){ toggleMobMenu(false); }
-document.addEventListener('click', e=>{
-  if(!e.target.closest('#mobNav')) closeMobMenu();
-});
-document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape') closeMobMenu();
-});
 
 // ---- variant C: Overseas only, menus lifted one level ----
 // The two sub-views (Coverage / Video Demos) become the bottom nav, so the
@@ -3022,7 +2984,7 @@ function scheduleFit(){
 // Every resolution gets the WHOLE presentation scaled to the viewport, so the
 // page itself never scrolls — only the demo phone scrolls internally (the HDB
 // page, the gov.wallet page). Wide screens keep the desktop presentation,
-// phones use the single-column layout with the top-left menu; both are scaled
+// phones use the single-column layout with the bottom-centre menu; both are scaled
 // by the same routine. ?fit=0 opts out (useful for screenshots).
 function fitStage(){
   const q = new URLSearchParams(location.search).get('fit');
@@ -3045,11 +3007,11 @@ function fitStage(){
   // scrollHeight also counts the "Powered by" badges that hang below the phone
   // (they are absolutely positioned and would otherwise be clipped)
   const H = Math.max(stage.offsetHeight, stage.scrollHeight);
-  // phones reserve a strip for the fixed Menu button (it lives outside the stage)
-  const topGap = compact ? 56 : 0;
-  // a hair of breathing room at the bottom edge; phones need a little more so
-  // the "Powered by" badge never touches the screen edge
-  const bottomPad = compact ? 10 : 2;
+  // phones reserve a strip for the fixed bottom tab bar (it lives outside the stage)
+  const topGap = compact ? 12 : 0;
+  // a hair of breathing room at the bottom edge; phones reserve room for the
+  // bottom tab bar (~48px tall, 12px off the edge) plus a small gap
+  const bottomPad = compact ? 60 : 2;
   const availH = Math.max(80, vh - topGap - bottomPad);
   // upscaling is only for tall kiosk displays (or an explicit ?fit=1);
   // everything else shrinks just enough to fit
